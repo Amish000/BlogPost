@@ -1,0 +1,39 @@
+﻿﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+@model List<BlogPost.Models.Entities.BlogPosts>
+
+<h2>Blog Posts</h2>
+
+<a href="@Url.Action("Create")" class="btn btn-primary">Create New Post</a>
+@if (Model == null || !Model.Any())
+{
+    <p>No blog posts available</p>
+}
+else
+{
+    @foreach (var post in Model)
+    {
+        <div class="container mt-5">
+            <div class="card">
+                <div class="card-body">
+                    <div>
+                        <h2>@post.Title</h2>
+                    </div>
+                    <div>
+                        <p>@post.Content</p>
+                    </div>
+                    <div class="d-flex align-items-center">
+                        <p class="mb-0 me-3">@post.CreatedAt.ToString("g")</p>
+                        <a href="@Url.Action("Edit", new { id = post.Id })" class="btn btn-warning me-3">Edit</a>
+                        <form asp-action="Delete" asp-controller="Home" asp-route-id="@post.Id" method="post">
+                            @Html.AntiForgeryToken()
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+}
