@@ -84,7 +84,7 @@ namespace BlogPost.Controllers
                 blogPost.IsActive = true;
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Recycle");
+            return RedirectToAction("Index");
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
