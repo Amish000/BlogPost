@@ -70,10 +70,12 @@ namespace BlogPost.Controllers
             }
             return RedirectToAction("Index");
         }
+        [HttpGet]
         public async Task<IActionResult> Recycle()
         {
             return View(await _context.BlogPosts.Where(t => !t.IsActive).ToListAsync());
         }
+        [HttpPost]
         public async Task<IActionResult> Restore(int id)
         {
             var blogPost = await _context.BlogPosts.FindAsync(id);
