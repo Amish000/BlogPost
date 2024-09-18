@@ -1,15 +1,14 @@
-﻿﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
 
 @model List<BlogPost.Models.Entities.BlogPosts>
 
-<h2>Blog Posts</h2>
+<h2>Archieved Blog Posts</h2>
 
-<a href="@Url.Action("Create")" class="btn btn-primary">Create New Post</a>
 @if (Model == null || !Model.Any())
 {
-    <p>No blog posts available</p>
+    <p>No archived blog posts available</p>
 }
 else
 {
@@ -26,10 +25,10 @@ else
                     </div>
                     <div class="d-flex align-items-center">
                         <p class="mb-0 me-3">@post.CreatedAt.ToString("g")</p>
-                        <a href="@Url.Action("Edit", new { id = post.Id })" class="btn btn-warning me-3">Edit</a>
-                        <form asp-action="SoftDelete" asp-controller="Home" asp-route-id="@post.Id" method="post">
+                        <a href="@Url.Action("Restore", new { id = post.Id })" class="btn btn-warning me-3">Restore</a>
+                        <form asp-action="Delete" asp-controller="Home" asp-route-id="@post.Id" method="post">
                             @Html.AntiForgeryToken()
-                            <button type="submit" class="btn btn-danger">Archive</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </div>
                 </div>

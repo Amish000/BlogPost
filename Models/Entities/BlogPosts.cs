@@ -24,6 +24,6 @@ namespace BlogPost.Models.Entities
         [Display(Name ="Is Active")]
         [Required]
         [DefaultValue(true)]
-        public bool IsActive { get; set; }
+        public bool IsActive { get; set; } = true;
     }
 }

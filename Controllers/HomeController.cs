@@ -18,7 +18,7 @@ namespace BlogPost.Controllers
 
         public async Task<IActionResult> Index()
         {
-            return View(await _context.BlogPosts.ToListAsync());
+            return View(await _context.BlogPosts.Where(t=>t.IsActive).ToListAsync());
         }
         public IActionResult Create()
         {
@@ -60,6 +60,32 @@ namespace BlogPost.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        public async Task<IActionResult> SoftDelete(int id)
+        {
+            var blogPost = await _context.BlogPosts.FindAsync(id);
+            if (blogPost is not null)
+            {
+                blogPost.IsActive = false;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Index");
+        }
+        public async Task<IActionResult> Recycle()
+        {
+            return View(await _context.BlogPosts.Where(t => !t.IsActive).ToListAsync());
+        }
+        public async Task<IActionResult> Restore(int id)
+        {
+            var blogPost = await _context.BlogPosts.FindAsync(id);
+            if(blogPost is not null)
+            {
+                blogPost.IsActive = true;
+                await _context.SaveChangesAsync();
+            }
+            return RedirectToAction("Recycle");
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Delete(int id)
         {
             var blogPost = await _context.BlogPosts.FindAsync(id);
@@ -68,7 +94,7 @@ namespace BlogPost.Controllers
                 _context.BlogPosts.Remove(blogPost);
                 await _context.SaveChangesAsync();
             }
-            return RedirectToAction("Index");
+            return RedirectToAction("Recycle");
         }
 
     }
